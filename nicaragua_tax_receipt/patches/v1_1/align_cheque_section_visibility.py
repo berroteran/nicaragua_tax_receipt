@@ -3,9 +3,9 @@ import frappe
 
 DOCTYPE = "Payment Entry"
 
-SECTION_VISIBILITY_RULE = 'eval:doc.mode_of_payment=="Cheque"'
-REFERENCE_VISIBILITY_RULE = 'eval:doc.mode_of_payment=="Cheque"'
-CLEARANCE_VISIBILITY_RULE = 'eval:doc.mode_of_payment=="Cheque" && doc.docstatus==1'
+SECTION_VISIBILITY_RULE = "eval:true"
+REFERENCE_VISIBILITY_RULE = "eval:true"
+CLEARANCE_VISIBILITY_RULE = "eval:doc.docstatus==1"
 
 
 def execute():

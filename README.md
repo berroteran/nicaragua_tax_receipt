@@ -79,9 +79,9 @@ Con esto se logra:
   cuando `Modo de pago = Cheque`
 - Layout de `Payment Entry` para mostrar `Concepto` antes de la seccion
   `ID de transaccion`
-- Visibilidad del bloque `ID de transaccion` gobernada por `Modo de pago`,
-  para que aparezca al seleccionar `Cheque` sin esperar a que el usuario
-  complete el tercero o las cuentas
+- Bloque `ID de transaccion` siempre visible en `Payment Entry`
+- La obligatoriedad de `Cheque / No. de Referencia` y `Cheque / Fecha de
+  referencia` sigue gobernada por `Modo de pago = Cheque`
 - Politica conservadora para campos funcionales ya existentes en algunos sitios:
   si ya existen, la app no los reemplaza ni toca sus datos
 - App desacoplada del core de ERPNext
@@ -208,12 +208,16 @@ En la practica eso provoca que:
 - pero el bloque de cheque todavia no aparezca
 - hasta despues de escoger tercero o hasta que ERPNext derive las cuentas
 
-Para este modulo, ese comportamiento no es ideal porque la intencion funcional
-del usuario ya esta clara desde el momento en que marca `Cheque`.
+Para este modulo, ese comportamiento no es ideal porque el bloque de
+identificacion bancaria y de cheque debe estar disponible siempre.
 
 Por eso la app ajusta la visibilidad del bloque `ID de transaccion` y de sus
-campos para que aparezcan tan pronto como `Modo de pago = Cheque`, incluso si
-el tercero o las cuentas todavia no se han completado.
+campos para que siempre esten visibles.
+
+La regla de negocio queda separada asi:
+
+- visibilidad: siempre visible
+- obligatoriedad: solo cuando `Modo de pago = Cheque`
 
 ## Flujo de usuario
 

@@ -86,6 +86,7 @@ Con esto se logra:
 - Politica conservadora para campos funcionales ya existentes en algunos sitios:
   si ya existen, la app no los reemplaza ni toca sus datos
 - App desacoplada del core de ERPNext
+- Autoajuste de metadata en cada `bench migrate` mediante `after_migrate`
 
 ## Modelo funcional
 
@@ -170,6 +171,7 @@ impresion y documentacion operativa.
 
 - `doctype_js["Payment Entry"]`
 - `doc_events["Payment Entry"]["validate"]`
+- `after_migrate`
 
 ### Componentes
 
@@ -197,6 +199,33 @@ impresion y documentacion operativa.
   `Modo de pago = Cheque` en lugar de esperar `paid_from` y `paid_to`
 - `nicaragua_tax_receipt/patches/v1_1/normalize_spanish_labels.py`
   normaliza etiquetas visibles a espanol
+- `nicaragua_tax_receipt/maintenance.py`
+  ejecuta una rutina idempotente de autoajuste en cada migracion para corregir
+  metadata desviada sin depender de intervencion manual
+
+## Operacion autonoma del modulo
+
+La intencion del modulo es que no dependa de un agente LLM para dejar un sitio
+funcionando correctamente.
+
+Por eso, desde esta version:
+
+- los parches siguen existiendo como historia versionada
+- pero ademas el app ejecuta una rutina de reconciliacion en cada
+  `bench migrate`
+- esa rutina revalida campos, labels, orden del layout y visibilidad del bloque
+  de cheque
+- si un sitio tenia metadata vieja o parcialmente aplicada, el modulo intenta
+  autocorregirla
+
+En la practica, el flujo esperado para otro sitio es:
+
+1. instalar el app
+2. correr `bench --site <sitio> migrate`
+3. dejar que `after_migrate` aplique los ajustes de metadata
+
+Eso reduce al minimo los casos donde alguien tenga que entrar manualmente a
+arreglar `Property Setter`, `Custom Field` o `field_order`.
 
 ## Nota funcional sobre cheques
 
@@ -260,6 +289,9 @@ Sitios de validacion usados durante el desarrollo:
 
 - `testing15.inversionesbel.com`
 - `ferretex.inversionesbel.com`
+- `gicosa.inversionesbel.com`
+- `inversionesvesta.com`
+- `erp.inversionesbel.com`
 
 ## Compatibilidad Esperada
 
@@ -287,6 +319,30 @@ requerir ajustes. Eso es especialmente cierto si:
 
 En resumen: el modulo esta pensado para ERPNext 15 y Frappe 15; fuera de ese
 marco no se puede prometer compatibilidad directa sin pruebas.
+
+## Sitios Verificados
+
+Instalaciones verificadas sobre este servidor:
+
+- `testing15.inversionesbel.com`
+- `ferretex.inversionesbel.com`
+- `gicosa.inversionesbel.com`
+- `inversionesvesta.com`
+- `erp.inversionesbel.com`
+
+En esos sitios se confirmo al menos:
+
+- instalacion del app
+- ejecucion de `migrate`
+- creacion o adopcion de `concepto`
+- creacion o adopcion de `impresion_cheque`
+- campos por fila de retencion
+- label `Información de Cheque`
+- visibilidad permanente del bloque de cheque
+
+Esto no reemplaza QA funcional por cada cliente, pero si confirma que la rutina
+de autoajuste del modulo puede aterrizar la metadata principal sin depender de
+intervencion manual posterior.
 
 ## Instalacion
 
@@ -323,6 +379,7 @@ Esto permite:
 - instalar la misma solucion en varios sitios ERPNext
 - mantener historial de cambios funcionales y tecnicos
 - desplegar fixes y mejoras sin tocar el core
+- hacer que `migrate` sirva tambien como rutina de reconciliacion de metadata
 
 ## Politica de compatibilidad con sitios existentes
 
@@ -349,6 +406,26 @@ La regla es:
 
 Esto permite instalar la app en sitios heterogeneos sin perder informacion ni
 romper personalizaciones previas.
+
+## Mantenimiento operativo
+
+En la version actual, el modulo intenta ser autosuficiente para despliegue y
+correccion de metadata:
+
+- `bench --site <sitio> install-app nicaragua_tax_receipt`
+- `bench --site <sitio> migrate`
+
+Con eso, el hook `after_migrate` ejecuta una reconciliacion idempotente para:
+
+- campos custom del flujo fiscal
+- seccion `Concepto`
+- posicion del bloque de cheque
+- label `Información de Cheque`
+- visibilidad del bloque de cheque
+- labels en espanol
+
+La meta de diseno es que el modulo no dependa de un agente LLM para completar
+ajustes normales de instalacion en otros sitios con Frappe / ERPNext 15.
 
 ## Consideraciones
 

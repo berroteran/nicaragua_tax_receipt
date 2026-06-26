@@ -6,9 +6,11 @@ DOCTYPE = "Payment Entry"
 SECTION_VISIBILITY_RULE = "eval:true"
 REFERENCE_VISIBILITY_RULE = "eval:true"
 CLEARANCE_VISIBILITY_RULE = "eval:doc.docstatus==1"
+SECTION_LABEL = "Informacion de Cheque"
 
 
 def execute():
+	upsert_property_setter("transaction_references", "label", SECTION_LABEL)
 	upsert_property_setter("transaction_references", "depends_on", SECTION_VISIBILITY_RULE)
 	upsert_property_setter("reference_no", "depends_on", REFERENCE_VISIBILITY_RULE)
 	upsert_property_setter("reference_date", "depends_on", REFERENCE_VISIBILITY_RULE)

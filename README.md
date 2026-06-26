@@ -80,6 +80,7 @@ Con esto se logra:
 - Layout de `Payment Entry` para mostrar `Concepto` antes de la seccion
   `ID de transaccion`
 - Bloque `ID de transaccion` siempre visible en `Payment Entry`
+- Seccion renombrada de `ID de transaccion` a `Informacion de Cheque`
 - La obligatoriedad de `Cheque / No. de Referencia` y `Cheque / Fecha de
   referencia` sigue gobernada por `Modo de pago = Cheque`
 - Politica conservadora para campos funcionales ya existentes en algunos sitios:
@@ -213,6 +214,9 @@ identificacion bancaria y de cheque debe estar disponible siempre.
 
 Por eso la app ajusta la visibilidad del bloque `ID de transaccion` y de sus
 campos para que siempre esten visibles.
+
+Tambien renombra esa seccion a `Informacion de Cheque` para que el usuario vea
+un encabezado mas claro y alineado al proceso de negocio.
 
 La regla de negocio queda separada asi:
 

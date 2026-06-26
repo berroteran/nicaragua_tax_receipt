@@ -40,7 +40,7 @@ def execute():
 					"fieldname": "custom_official_receipt_no",
 					"fieldtype": "Data",
 					"insert_after": "custom_require_official_receipt_no",
-					"label": "Numero de comprobante oficial",
+					"label": "Número de comprobante oficial",
 					"allow_on_submit": 1,
 					"in_list_view": 1,
 					"read_only": 0,
@@ -110,7 +110,7 @@ def force_tax_receipt_field_properties():
 		WHERE name = %s
 		""",
 		(
-			"Numero de comprobante oficial",
+			"Número de comprobante oficial",
 			"eval:doc.custom_require_official_receipt_no",
 			custom_field_name,
 		),

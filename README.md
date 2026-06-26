@@ -78,9 +78,9 @@ Con esto se logra:
 - Validacion de `Cheque / No. de Referencia` y `Cheque / Fecha de referencia`
   cuando `Modo de pago = Cheque`
 - Layout de `Payment Entry` para mostrar `Concepto` antes de la seccion
-  `ID de transaccion`
-- Bloque `ID de transaccion` siempre visible en `Payment Entry`
-- Seccion renombrada de `ID de transaccion` a `Informacion de Cheque`
+  `ID de transacción`
+- Bloque `ID de transacción` siempre visible en `Payment Entry`
+- Sección renombrada de `ID de transacción` a `Información de Cheque`
 - La obligatoriedad de `Cheque / No. de Referencia` y `Cheque / Fecha de
   referencia` sigue gobernada por `Modo de pago = Cheque`
 - Politica conservadora para campos funcionales ya existentes en algunos sitios:
@@ -189,7 +189,7 @@ impresion y documentacion operativa.
 - `nicaragua_tax_receipt/patches/v1_1/ensure_payment_entry_concept_layout.py`
   crea la seccion `Concepto` y ubica el campo debajo de esa seccion
 - `nicaragua_tax_receipt/patches/v1_1/move_payment_entry_transaction_section_below_concept.py`
-  mueve la seccion `ID de transaccion` debajo de `Concepto`
+  mueve la sección `ID de transacción` debajo de `Concepto`
 - `nicaragua_tax_receipt/patches/v1_1/reorder_payment_entry_field_order.py`
   normaliza el `field_order` del `Payment Entry` para reflejar ese layout
 - `nicaragua_tax_receipt/patches/v1_1/align_cheque_section_visibility.py`
@@ -212,10 +212,10 @@ En la practica eso provoca que:
 Para este modulo, ese comportamiento no es ideal porque el bloque de
 identificacion bancaria y de cheque debe estar disponible siempre.
 
-Por eso la app ajusta la visibilidad del bloque `ID de transaccion` y de sus
+Por eso la app ajusta la visibilidad del bloque `ID de transacción` y de sus
 campos para que siempre esten visibles.
 
-Tambien renombra esa seccion a `Informacion de Cheque` para que el usuario vea
+También renombra esa sección a `Información de Cheque` para que el usuario vea
 un encabezado mas claro y alineado al proceso de negocio.
 
 La regla de negocio queda separada asi:
@@ -236,7 +236,7 @@ La regla de negocio queda separada asi:
 8. El proveedor puede usar `impresion_cheque` en formatos de impresion.
 9. Si el modo de pago es `Cheque`, `Cheque / No. de Referencia` y
    `Cheque / Fecha de referencia` pasan a ser obligatorios.
-10. La seccion `ID de transaccion` se acomoda debajo de `Concepto`.
+10. La sección `ID de transacción` se acomoda debajo de `Concepto`.
 
 ## Beneficios
 

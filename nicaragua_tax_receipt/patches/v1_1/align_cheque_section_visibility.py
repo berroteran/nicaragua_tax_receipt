@@ -6,7 +6,7 @@ DOCTYPE = "Payment Entry"
 SECTION_VISIBILITY_RULE = "eval:true"
 REFERENCE_VISIBILITY_RULE = "eval:true"
 CLEARANCE_VISIBILITY_RULE = "eval:doc.docstatus==1"
-SECTION_LABEL = "Informacion de Cheque"
+SECTION_LABEL = "Información de Cheque"
 
 
 def execute():

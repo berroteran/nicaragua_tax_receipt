@@ -4,7 +4,7 @@ import frappe
 LABELS = {
 	"Purchase Taxes and Charges-custom_require_official_receipt_no": "Requiere comprobante oficial",
 	"Advance Taxes and Charges-custom_require_official_receipt_no": "Requiere comprobante oficial",
-	"Advance Taxes and Charges-custom_official_receipt_no": "Numero de comprobante oficial",
+	"Advance Taxes and Charges-custom_official_receipt_no": "Número de comprobante oficial",
 	"Supplier-impresion_cheque": "Impresion en cheque",
 }
 

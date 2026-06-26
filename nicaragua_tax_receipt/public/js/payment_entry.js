@@ -14,10 +14,24 @@ frappe.ui.form.on("Payment Entry", {
 
 	toggle_cheque_reference_requirements(frm) {
 		const isCheque = frm.doc.mode_of_payment === "Cheque";
+		frm.set_df_property(
+			"transaction_references",
+			"depends_on",
+			isCheque ? "eval:true" : 'eval:doc.mode_of_payment=="Cheque"'
+		);
+		frm.set_df_property("reference_no", "depends_on", isCheque ? "eval:true" : 'eval:doc.mode_of_payment=="Cheque"');
+		frm.set_df_property("reference_date", "depends_on", isCheque ? "eval:true" : 'eval:doc.mode_of_payment=="Cheque"');
+		frm.set_df_property(
+			"clearance_date",
+			"depends_on",
+			isCheque ? "eval:doc.docstatus==1" : 'eval:doc.mode_of_payment=="Cheque" && doc.docstatus==1'
+		);
 		frm.set_df_property("reference_no", "reqd", isCheque ? 1 : 0);
 		frm.set_df_property("reference_date", "reqd", isCheque ? 1 : 0);
+		frm.refresh_field("transaction_references");
 		frm.refresh_field("reference_no");
 		frm.refresh_field("reference_date");
+		frm.refresh_field("clearance_date");
 	},
 
 	configure_tax_grid(frm) {

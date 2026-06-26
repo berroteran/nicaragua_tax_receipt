@@ -79,6 +79,9 @@ Con esto se logra:
   cuando `Modo de pago = Cheque`
 - Layout de `Payment Entry` para mostrar `Concepto` antes de la seccion
   `ID de transaccion`
+- Visibilidad del bloque `ID de transaccion` gobernada por `Modo de pago`,
+  para que aparezca al seleccionar `Cheque` sin esperar a que el usuario
+  complete el tercero o las cuentas
 - Politica conservadora para campos funcionales ya existentes en algunos sitios:
   si ya existen, la app no los reemplaza ni toca sus datos
 - App desacoplada del core de ERPNext
@@ -188,8 +191,29 @@ impresion y documentacion operativa.
   mueve la seccion `ID de transaccion` debajo de `Concepto`
 - `nicaragua_tax_receipt/patches/v1_1/reorder_payment_entry_field_order.py`
   normaliza el `field_order` del `Payment Entry` para reflejar ese layout
+- `nicaragua_tax_receipt/patches/v1_1/align_cheque_section_visibility.py`
+  reemplaza la visibilidad estandar del bloque de cheque para que dependa de
+  `Modo de pago = Cheque` en lugar de esperar `paid_from` y `paid_to`
 - `nicaragua_tax_receipt/patches/v1_1/normalize_spanish_labels.py`
   normaliza etiquetas visibles a espanol
+
+## Nota funcional sobre cheques
+
+ERPNext estandar controla la visibilidad de `reference_no` y `reference_date`
+con una regla orientada a cuando ya existen `paid_from` y `paid_to`.
+
+En la practica eso provoca que:
+
+- el usuario seleccione `Modo de pago = Cheque`
+- pero el bloque de cheque todavia no aparezca
+- hasta despues de escoger tercero o hasta que ERPNext derive las cuentas
+
+Para este modulo, ese comportamiento no es ideal porque la intencion funcional
+del usuario ya esta clara desde el momento en que marca `Cheque`.
+
+Por eso la app ajusta la visibilidad del bloque `ID de transaccion` y de sus
+campos para que aparezcan tan pronto como `Modo de pago = Cheque`, incluso si
+el tercero o las cuentas todavia no se han completado.
 
 ## Flujo de usuario
 

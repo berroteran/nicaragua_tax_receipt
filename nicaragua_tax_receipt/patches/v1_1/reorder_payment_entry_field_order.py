@@ -7,6 +7,12 @@ DOCTYPE = "Payment Entry"
 CONCEPT_SECTION = "custom_concepto"
 CONCEPT_FIELD = "concepto"
 TRANSACTION_SECTION = "transaction_references"
+CHEQUE_FIELDS = [
+	"reference_no",
+	"column_break_23",
+	"reference_date",
+	"clearance_date",
+]
 
 
 def execute():
@@ -15,7 +21,11 @@ def execute():
 		return
 
 	field_order = ensure_after(field_order, CONCEPT_FIELD, CONCEPT_SECTION)
-	field_order = ensure_after(field_order, TRANSACTION_SECTION, CONCEPT_FIELD)
+	field_order = ensure_group_after(
+		field_order,
+		[TRANSACTION_SECTION, *CHEQUE_FIELDS],
+		CONCEPT_FIELD,
+	)
 	upsert_field_order_property_setter(field_order)
 
 
@@ -31,6 +41,22 @@ def ensure_after(field_order, fieldname, insert_after):
 	field_order = [value for value in field_order if value != fieldname]
 	index = field_order.index(insert_after)
 	field_order.insert(index + 1, fieldname)
+	return field_order
+
+
+def ensure_group_after(field_order, fieldnames, insert_after):
+	if insert_after not in field_order:
+		return field_order
+
+	group = [fieldname for fieldname in fieldnames if fieldname in field_order]
+	if not group:
+		return field_order
+
+	field_order = [value for value in field_order if value not in group]
+	index = field_order.index(insert_after)
+	for offset, fieldname in enumerate(group, start=1):
+		field_order.insert(index + offset, fieldname)
+
 	return field_order
 
 

@@ -7,3 +7,4 @@
 nicaragua_tax_receipt.patches.v1_0.add_tax_receipt_custom_fields
 nicaragua_tax_receipt.patches.v1_1.add_payment_entry_concept_field
 nicaragua_tax_receipt.patches.v1_1.add_supplier_check_print_field
+nicaragua_tax_receipt.patches.v1_1.normalize_spanish_labels

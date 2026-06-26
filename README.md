@@ -75,6 +75,10 @@ Con esto se logra:
 - Campo `concepto` en `Payment Entry` listo para filtros, busqueda, reportes,
   impresiones y formatos de cheque
 - Campo `impresion_cheque` en `Supplier` para formatos de impresion de cheque
+- Validacion de `Cheque / No. de Referencia` y `Cheque / Fecha de referencia`
+  cuando `Modo de pago = Cheque`
+- Layout de `Payment Entry` para mostrar `Concepto` antes de la seccion
+  `ID de transaccion`
 - Politica conservadora para campos funcionales ya existentes en algunos sitios:
   si ya existen, la app no los reemplaza ni toca sus datos
 - App desacoplada del core de ERPNext
@@ -178,6 +182,14 @@ impresion y documentacion operativa.
   adopta o crea `Payment Entry.concepto`
 - `nicaragua_tax_receipt/patches/v1_1/add_supplier_check_print_field.py`
   crea `Supplier.impresion_cheque` si el sitio no lo tiene
+- `nicaragua_tax_receipt/patches/v1_1/ensure_payment_entry_concept_layout.py`
+  crea la seccion `Concepto` y ubica el campo debajo de esa seccion
+- `nicaragua_tax_receipt/patches/v1_1/move_payment_entry_transaction_section_below_concept.py`
+  mueve la seccion `ID de transaccion` debajo de `Concepto`
+- `nicaragua_tax_receipt/patches/v1_1/reorder_payment_entry_field_order.py`
+  normaliza el `field_order` del `Payment Entry` para reflejar ese layout
+- `nicaragua_tax_receipt/patches/v1_1/normalize_spanish_labels.py`
+  normaliza etiquetas visibles a espanol
 
 ## Flujo de usuario
 
@@ -190,6 +202,9 @@ impresion y documentacion operativa.
 7. El usuario puede usar `concepto` en el pago para impresiones, reportes y
    formatos de cheque.
 8. El proveedor puede usar `impresion_cheque` en formatos de impresion.
+9. Si el modo de pago es `Cheque`, `Cheque / No. de Referencia` y
+   `Cheque / Fecha de referencia` pasan a ser obligatorios.
+10. La seccion `ID de transaccion` se acomoda debajo de `Concepto`.
 
 ## Beneficios
 
@@ -199,6 +214,47 @@ impresion y documentacion operativa.
 - hace el dato consultable dentro de ERPNext
 - permite transportar la solucion entre instancias por Git
 - evita tocar `erpnext` core
+
+## Version Base De Desarrollo
+
+Esta app fue desarrollada y validada originalmente sobre este stack:
+
+- Bench `5.29.1`
+- Frappe `15.102.1`
+- ERPNext `15.101.0`
+- Python `3.12.3`
+
+Sitios de validacion usados durante el desarrollo:
+
+- `testing15.inversionesbel.com`
+- `ferretex.inversionesbel.com`
+
+## Compatibilidad Esperada
+
+La app esta orientada a:
+
+- Frappe `v15`
+- ERPNext `v15`
+
+Y fue probada en una rama muy cercana a:
+
+- Frappe `15.102.x`
+- ERPNext `15.101.x`
+
+## Advertencia De Compatibilidad
+
+Si intentas instalar esta app en otra version de Frappe o ERPNext, puede
+requerir ajustes. Eso es especialmente cierto si:
+
+- el `Payment Entry` fue muy personalizado manualmente
+- existen `Property Setter` previos sobre `field_order`
+- ya existen campos custom con el mismo nombre pero con otra configuracion
+- el modo de pago para cheque no se llama exactamente `Cheque`
+- tu rama de Frappe o ERPNext cambió estructura, metadata o renderizado del
+  `Payment Entry`
+
+En resumen: el modulo esta pensado para ERPNext 15 y Frappe 15; fuera de ese
+marco no se puede prometer compatibilidad directa sin pruebas.
 
 ## Instalacion
 
@@ -265,8 +321,14 @@ romper personalizaciones previas.
 ## Consideraciones
 
 - La app crea `Custom Fields` por patch, no tocando DocTypes core.
+- La app tambien crea o ajusta `Property Setter` para layout del `Payment Entry`
+  cuando hace falta ordenar secciones.
 - La validacion principal corre en servidor para evitar saltos por API o import.
 - El comportamiento visual corre en cliente para mejorar la experiencia.
+- El layout final del formulario puede variar si el sitio ya tiene
+  personalizaciones fuertes en `field_order`.
+- La regla de cheque depende hoy del valor exacto `Cheque` en
+  `mode_of_payment`.
 - Los labels actuales estan en ingles tecnico; pueden adaptarse a espanol si
   se desea estandarizar la experiencia de usuario.
 

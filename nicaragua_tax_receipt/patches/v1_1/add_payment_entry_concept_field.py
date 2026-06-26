@@ -23,7 +23,6 @@ def execute():
 					"description": "Colocar el concepto del pago",
 					"reqd": 1,
 					"in_standard_filter": 1,
-					"search_index": 1,
 					"allow_on_submit": 1,
 				}
 			]
@@ -39,7 +38,7 @@ def update_existing_custom_field():
 		"description": "Colocar el concepto del pago",
 		"reqd": 1,
 		"in_standard_filter": 1,
-		"search_index": 1,
+		"search_index": 0,
 		"allow_on_submit": 1,
 		"hidden": 0,
 	}

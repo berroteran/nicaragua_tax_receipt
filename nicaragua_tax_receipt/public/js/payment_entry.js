@@ -1,10 +1,23 @@
 frappe.ui.form.on("Payment Entry", {
 	refresh(frm) {
+		frm.trigger("toggle_cheque_reference_requirements");
 		frm.trigger("configure_tax_grid");
+	},
+
+	mode_of_payment(frm) {
+		frm.trigger("toggle_cheque_reference_requirements");
 	},
 
 	taxes_on_form_rendered(frm) {
 		frm.trigger("configure_tax_grid");
+	},
+
+	toggle_cheque_reference_requirements(frm) {
+		const isCheque = frm.doc.mode_of_payment === "Cheque";
+		frm.set_df_property("reference_no", "reqd", isCheque ? 1 : 0);
+		frm.set_df_property("reference_date", "reqd", isCheque ? 1 : 0);
+		frm.refresh_field("reference_no");
+		frm.refresh_field("reference_date");
 	},
 
 	configure_tax_grid(frm) {

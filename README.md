@@ -63,6 +63,8 @@ Con esto se logra:
   `custom_require_official_receipt_no`
 - Campo reusable en `Payment Entry` para concepto del pago:
   `concepto`
+- Campo opcional por fila en `Payment Entry Deduction`:
+  `custom_receipt_no`
 - Campo reusable en `Supplier` para texto de impresion en cheque:
   `impresion_cheque`
 - Campo de trazabilidad en `Advance Taxes and Charges`:
@@ -75,6 +77,15 @@ Con esto se logra:
 - Campo `concepto` en `Payment Entry` listo para filtros, busqueda, reportes,
   impresiones y formatos de cheque
 - Campo `impresion_cheque` en `Supplier` para formatos de impresion de cheque
+- Campo `No Comprobante` visible por defecto en la tabla
+  `Payment Entry Deduction`
+- Campo `No Comprobante` preparado con filtros estandar, indice de busqueda
+  del framework y visibilidad en reportes para la tabla
+  `Payment Entry Deduction`
+- Reporte `Comprobantes de retencion en la fuente` con filtro por rango de
+  fechas y selector de cuentas unico para consultar comprobantes capturados
+  en `Impuestos` y `Deducciones o Pérdida`
+- Acceso directo al reporte desde el workspace `Accounting`
 - Validacion de `Cheque / No. de Referencia` y `Cheque / Fecha de referencia`
   cuando `Modo de pago = Cheque`
 - Layout de `Payment Entry` para mostrar `Concepto` antes de la seccion
@@ -186,10 +197,15 @@ impresion y documentacion operativa.
   por encabezado
 - `nicaragua_tax_receipt/patches/v1_1/add_payment_entry_concept_field.py`
   adopta o crea `Payment Entry.concepto`
+- `nicaragua_tax_receipt/patches/v1_1/add_payment_entry_deduction_receipt_field.py`
+  crea `Payment Entry Deduction.custom_receipt_no` como campo opcional visible
+  en la grilla
 - `nicaragua_tax_receipt/patches/v1_1/add_supplier_check_print_field.py`
   crea `Supplier.impresion_cheque` si el sitio no lo tiene
 - `nicaragua_tax_receipt/patches/v1_1/ensure_payment_entry_concept_layout.py`
   crea la seccion `Concepto` y ubica el campo debajo de esa seccion
+- `nicaragua_tax_receipt/patches/v1_1/ensure_retention_receipt_report.py`
+  publica el reporte de comprobantes y crea un shortcut en `Accounting`
 - `nicaragua_tax_receipt/patches/v1_1/move_payment_entry_transaction_section_below_concept.py`
   mueve la sección `ID de transacción` debajo de `Concepto`
 - `nicaragua_tax_receipt/patches/v1_1/reorder_payment_entry_field_order.py`
@@ -198,7 +214,8 @@ impresion y documentacion operativa.
   reemplaza la visibilidad estandar del bloque de cheque para que dependa de
   `Modo de pago = Cheque` en lugar de esperar `paid_from` y `paid_to`
 - `nicaragua_tax_receipt/patches/v1_1/normalize_spanish_labels.py`
-  normaliza etiquetas visibles a espanol
+  normaliza etiquetas visibles a espanol, incluyendo labels estandar del core
+  cuando el modulo necesita dejar la interfaz coherente en todos los sitios
 - `nicaragua_tax_receipt/maintenance.py`
   ejecuta una rutina idempotente de autoajuste en cada migracion para corregir
   metadata desviada sin depender de intervencion manual

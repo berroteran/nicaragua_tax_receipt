@@ -86,6 +86,8 @@ Con esto se logra:
   fechas y selector de cuentas unico para consultar comprobantes capturados
   en `Impuestos` y `Deducciones o Pérdida`
 - Acceso directo al reporte desde el workspace `Accounting`
+- Tarjeta `Informes Nicaragua` dentro del workspace `Accounting` para agrupar
+  reportes propios del modulo
 - Validacion de `Cheque / No. de Referencia` y `Cheque / Fecha de referencia`
   cuando `Modo de pago = Cheque`
 - Layout de `Payment Entry` para mostrar `Concepto` antes de la seccion
@@ -214,7 +216,8 @@ impresion y documentacion operativa.
 - `nicaragua_tax_receipt/patches/v1_1/ensure_payment_entry_concept_layout.py`
   crea la seccion `Concepto` y ubica el campo debajo de esa seccion
 - `nicaragua_tax_receipt/patches/v1_1/ensure_retention_receipt_report.py`
-  publica el reporte de comprobantes y crea un shortcut en `Accounting`
+  publica el reporte de comprobantes, crea un shortcut y agrega la tarjeta
+  `Informes Nicaragua` en `Accounting`
 - `nicaragua_tax_receipt/patches/v1_1/move_payment_entry_transaction_section_below_concept.py`
   mueve la sección `ID de transacción` debajo de `Concepto`
 - `nicaragua_tax_receipt/patches/v1_1/reorder_payment_entry_field_order.py`

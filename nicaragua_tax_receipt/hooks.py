@@ -85,7 +85,7 @@ doctype_js = {
 # ------------
 
 # before_install = "nicaragua_tax_receipt.install.before_install"
-# after_install = "nicaragua_tax_receipt.install.after_install"
+after_install = "nicaragua_tax_receipt.install.after_install"
 after_migrate = ["nicaragua_tax_receipt.maintenance.after_migrate"]
 
 # Uninstallation

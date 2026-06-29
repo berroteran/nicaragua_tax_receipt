@@ -97,7 +97,10 @@ Con esto se logra:
 - Politica conservadora para campos funcionales ya existentes en algunos sitios:
   si ya existen, la app no los reemplaza ni toca sus datos
 - App desacoplada del core de ERPNext
+- Bootstrap de metadata al instalar la app mediante `after_install`
 - Autoajuste de metadata en cada `bench migrate` mediante `after_migrate`
+- Verificacion defensiva del reporte para autocorregir campos faltantes antes
+  de ejecutar SQL
 
 ## Modelo funcional
 
@@ -180,6 +183,7 @@ impresion y documentacion operativa.
 
 ### Hooks
 
+- `after_install`
 - `doctype_js["Payment Entry"]`
 - `doc_events["Payment Entry"]["validate"]`
 - `after_migrate`
@@ -188,6 +192,11 @@ impresion y documentacion operativa.
 
 - `nicaragua_tax_receipt/hooks.py`
   registra hooks de frontend y backend
+- `nicaragua_tax_receipt/bootstrap.py`
+  centraliza la reconciliacion de metadata en orden: campos, layout, labels y
+  publicacion del reporte
+- `nicaragua_tax_receipt/install.py`
+  ejecuta bootstrap inicial al instalar la app en un sitio
 - `nicaragua_tax_receipt/tax_receipt.py`
   valida el comprobante por fila en servidor
 - `nicaragua_tax_receipt/public/js/payment_entry.js`
@@ -440,6 +449,10 @@ Con eso, el hook `after_migrate` ejecuta una reconciliacion idempotente para:
 - label `Información de Cheque`
 - visibilidad del bloque de cheque
 - labels en espanol
+
+Adicionalmente, `after_install` aplica la misma reconciliacion en la instalacion
+inicial del sitio para evitar escenarios donde el reporte o la UI queden
+publicados antes de que existan todos los campos requeridos.
 
 La meta de diseno es que el modulo no dependa de un agente LLM para completar
 ajustes normales de instalacion en otros sitios con Frappe / ERPNext 15.

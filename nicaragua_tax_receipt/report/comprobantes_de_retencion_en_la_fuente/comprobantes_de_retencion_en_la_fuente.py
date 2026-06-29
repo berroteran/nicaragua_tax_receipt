@@ -1,12 +1,15 @@
 import frappe
 from frappe import _
 
+from nicaragua_tax_receipt.bootstrap import ensure_report_dependencies
+
 
 PARTY_DOCTYPES = ("Supplier", "Customer")
 
 
 def execute(filters=None):
 	filters = frappe._dict(filters or {})
+	ensure_report_dependencies()
 	validate_filters(filters)
 
 	party_details = get_party_details()
